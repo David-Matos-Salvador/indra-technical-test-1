@@ -2,7 +2,7 @@
   <div class="flex-center-center">
     <h2 class="mr-2">
       <mat-icon>garage</mat-icon>
-      Vehicle List
+        Listado de Vehiculos
     </h2>
     @if (vehicles.length > 0) {
       <mat-chip-set>
@@ -12,6 +12,9 @@
         </mat-chip>
       </mat-chip-set>
     }
+    <button class="ml-2" matFab (click)="add.emit()">
+        <mat-icon>add</mat-icon>
+    </button>
   </div>
 
   <!-- Empty state -->
@@ -36,7 +39,7 @@
               <h3> {{ vehicle.brand }} {{ vehicle.model }}</h3>
             </div>
           </mat-card-header>
-          <mat-card-content>
+          <mat-card-content class="mt-2">
             <div>
               <mat-icon class="mr-1">business</mat-icon>
               <span>Brand:</span>
@@ -54,8 +57,14 @@
               <span>Year:</span>
               <span>{{ vehicle.year }}</span>
             </div>
+            <mat-divider></mat-divider>
+            <div>
+              <mat-icon class="mr-1">search_hands_free</mat-icon>
+              <span>Uso:</span>
+              <span>{{ vehicle.usage_type }}</span>
+            </div>
           </mat-card-content>
-          <mat-card-actions class="flex-center-around">
+          <mat-card-actions class="mt-2 flex-center-around">
             <button mat-stroked-button color="primary" (click)="onEdit(vehicle)">
               <mat-icon>edit</mat-icon>
               Edit
@@ -69,10 +78,11 @@
             <mat-card-footer>
               <small class="flex-center-center">
                 <mat-icon>schedule</mat-icon>
-                Created: {{ formatDate(vehicle.created_at) }}
+                Creado: {{ formatDate(vehicle.created_at) }}
               </small>
             </mat-card-footer>
           }
+
         </mat-card>
       }
     </div>

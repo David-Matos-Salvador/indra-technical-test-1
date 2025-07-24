@@ -48,7 +48,8 @@ export class VehicleFormComponent implements OnInit {
       this.vehicleForm.patchValue({
         brand: this.vehicle.brand,
         model: this.vehicle.model,
-        year: this.vehicle.year
+        year: this.vehicle.year,
+        usage_type: this.vehicle.usage_type,
       });
     }
   }
@@ -59,7 +60,7 @@ export class VehicleFormComponent implements OnInit {
       let request: Vehicle;
       if (this.isEditMode && this.vehicle?.vehicle_id) {
         request = {
-          id: this.vehicle.vehicle_id,
+          vehicle_id: this.vehicle.vehicle_id,
           ...formValue
         };
       } else {

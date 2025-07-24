@@ -17,8 +17,9 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 })
 export class VehicleComponent {
   vehicles = signal<Vehicle[]>([]);
-  selectedVehicle: Vehicle | null = null;
-  isSubmitting = false;
+  selectedVehicle = signal<Vehicle | null>(null);
+  showForm = signal<boolean>(false);
+  isSubmitting = signal<boolean>(false);
 
   constructor(
     private vehicleService: VehicleService,
@@ -35,30 +36,53 @@ export class VehicleComponent {
   }
 
   onVehicleSubmit(vehicleData: Vehicle) {
-    this.isSubmitting = true;
-    this.vehicleService.createVehicle(vehicleData).subscribe({
-      next: (result) => {
-        this.isSubmitting = false;
-        if (result) {
-          this.showSnackBar('✅ Vehicle created successfully', 'success');
-        } else {
+    this.isSubmitting.set(true);
+    debugger;
+    if ('vehicle_id' in vehicleData) {
+      // Actualizar vehículo existente
+      this.vehicleService.updateVehicle(vehicleData).subscribe({
+        next: (result) => {
+          this.isSubmitting.set(false);
+          if (result) {
+            this.showSnackBar('✅ Vehicle updated successfully', 'success');
+            this.selectedVehicle.set(null);
+            this.showForm.set(false);
+          } else {
+            this.showSnackBar('❌ Error updating vehicle', 'error');
+          }
+        },
+        error: () => {
+          this.isSubmitting.set(false);
+          this.showSnackBar('❌ Error updating vehicle', 'error');
+        }
+      });
+    } else {
+      // Crear nuevo vehículo
+      this.vehicleService.createVehicle(vehicleData).subscribe({
+        next: (result) => {
+          this.isSubmitting.set(false);
+          if (result) {
+            this.showSnackBar('✅ Vehicle created successfully', 'success');
+          } else {
+            this.showSnackBar('❌ Error creating vehicle', 'error');
+          }
+        },
+        error: () => {
+          this.isSubmitting.set(false);
           this.showSnackBar('❌ Error creating vehicle', 'error');
         }
-      },
-      error: () => {
-        this.isSubmitting = false;
-        this.showSnackBar('❌ Error creating vehicle', 'error');
-      }
-    });
-
+      });
+    }
   }
 
   onFormCancel() {
-    this.selectedVehicle = null;
+    this.selectedVehicle.set(null);
+    this.showForm.set(false);
   }
 
   onEditVehicle(vehicle: Vehicle) {
-    this.selectedVehicle = vehicle;
+    this.selectedVehicle.set(vehicle);
+    this.showForm.set(true);
     this.scrollToForm();
   }
 

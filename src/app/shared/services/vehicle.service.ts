@@ -82,7 +82,7 @@ export class VehicleService {
       this.supabaseService.client
         .from('vehicles')
         .update(updateData)
-        .eq('id', vehicle_id)
+        .eq('vehicle_id', vehicle_id)
         .select()
         .single()
     ).pipe(
@@ -102,7 +102,7 @@ export class VehicleService {
       this.supabaseService.client
         .from('vehicles')
         .delete()
-        .eq('id', id)
+        .eq('vehicle_id', id)
     ).pipe(
       map(response => {
         if (response.error) {
