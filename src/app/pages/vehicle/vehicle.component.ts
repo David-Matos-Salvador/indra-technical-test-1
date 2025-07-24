@@ -37,7 +37,6 @@ export class VehicleComponent {
 
   onVehicleSubmit(vehicleData: Vehicle) {
     this.isSubmitting.set(true);
-    debugger;
     if ('vehicle_id' in vehicleData) {
       // Actualizar vehículo existente
       this.vehicleService.updateVehicle(vehicleData).subscribe({
