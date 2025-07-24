@@ -1,0 +1,18 @@
+<div class="container">
+  <!-- Form -->
+  <app-vehicle-form
+    [vehicle]="selectedVehicle"
+    [isSubmitting]="isSubmitting"
+    (vehicleSubmit)="onVehicleSubmit($event)"
+    (cancel)="onFormCancel()"
+  ></app-vehicle-form>
+
+  <hr>
+
+  <!-- Vehicle list -->
+  <app-vehicle-list
+    [vehicles]="vehicles()"
+    (edit)="onEditVehicle($event)"
+    (delete)="onDeleteVehicle($event)"
+  ></app-vehicle-list>
+</div>

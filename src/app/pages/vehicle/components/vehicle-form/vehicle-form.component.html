@@ -1,0 +1,105 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>
+      <mat-icon>{{ isEditMode ? 'edit' : 'add_circle' }}</mat-icon>
+      {{ isEditMode ? 'Edit Vehicle' : 'Add New Vehicle' }}
+    </mat-card-title>
+    <mat-card-subtitle>
+      {{ isEditMode ? 'Modify vehicle information' : 'Complete vehicle information' }}
+    </mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <form [formGroup]="vehicleForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="outline">
+        <mat-label>Brand</mat-label>
+        <input
+          matInput
+          formControlName="brand"
+          placeholder="e.g: Toyota, Ford, Chevrolet"
+          autocomplete="off"
+          >
+        <mat-icon matSuffix>directions_car</mat-icon>
+        @if (vehicleForm.get('brand')?.hasError('required')) {
+          <mat-error>
+            Brand is required
+          </mat-error>
+        }
+        @if (vehicleForm.get('brand')?.hasError('minlength')) {
+          <mat-error>
+            Brand must have at least 2 characters
+          </mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Model</mat-label>
+        <input
+          matInput
+          formControlName="model"
+          placeholder="e.g: Corolla, Focus, Cruze"
+          autocomplete="off"
+          >
+        <mat-icon matSuffix>car_rental</mat-icon>
+        @if (vehicleForm.get('model')?.hasError('required')) {
+          <mat-error>
+            Model is required
+          </mat-error>
+        }
+        @if (vehicleForm.get('model')?.hasError('minlength')) {
+          <mat-error>
+            Model must have at least 2 characters
+          </mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Year</mat-label>
+        <input
+          matInput
+          type="number"
+          formControlName="year"
+          placeholder="e.g: 2023"
+          min="1900"
+          max="2030"
+          autocomplete="off"
+          >
+        <mat-icon matSuffix>calendar_today</mat-icon>
+        @if (vehicleForm.get('year')?.hasError('required')) {
+          <mat-error>
+            Year is required
+          </mat-error>
+        }
+        @if (vehicleForm.get('year')?.hasError('min') || vehicleForm.get('year')?.hasError('max')) {
+          <mat-error>
+            Year must be between 1900 and 2030
+          </mat-error>
+        }
+      </mat-form-field>
+       <mat-form-field appearance="outline">
+        <mat-label>Tipo de uso</mat-label>
+        <mat-select  formControlName="usage_type">
+          @for (usageType of usageTypes; track usageType) {
+            <mat-option [value]="usageType">{{usageType}}</mat-option>
+          }
+        </mat-select>
+       </mat-form-field>
+    </form>
+  </mat-card-content>
+
+  <mat-card-actions class="flex-center-around">
+    <button mat-stroked-button type="button" (click)="onCancel()" [disabled]="isSubmitting">
+      <mat-icon>cancel</mat-icon>
+      Cancel
+    </button>
+    <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="vehicleForm.invalid || isSubmitting">
+      @if (isSubmitting) {
+        <mat-spinner diameter="20"></mat-spinner>
+      }
+      @if (!isSubmitting) {
+        <mat-icon>{{ isEditMode ? 'update' : 'add' }}</mat-icon>
+      }
+      {{ isSubmitting ? 'Saving...' : (isEditMode ? 'Update' : 'Create Vehicle') }}
+    </button>
+  </mat-card-actions>
+</mat-card>

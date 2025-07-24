@@ -1,0 +1,80 @@
+<div class="mt-2">
+  <div class="flex-center-center">
+    <h2 class="mr-2">
+      <mat-icon>garage</mat-icon>
+      Vehicle List
+    </h2>
+    @if (vehicles.length > 0) {
+      <mat-chip-set>
+        <mat-chip color="primary" selected>
+          <mat-icon matChipAvatar>inventory</mat-icon>
+          Total: {{ vehicles.length }}
+        </mat-chip>
+      </mat-chip-set>
+    }
+  </div>
+
+  <!-- Empty state -->
+  @if (vehicles.length === 0) {
+    <mat-card>
+      <mat-card-content>
+        <mat-icon>no_crash</mat-icon>
+        <h3>No vehicles registered</h3>
+        <p>Start by adding your first vehicle using the form above.</p>
+      </mat-card-content>
+    </mat-card>
+  }
+
+  <!-- Vehicle list -->
+  @if (vehicles.length > 0) {
+    <div class="cards">
+      @for (vehicle of vehicles; track trackByVehicleId(i, vehicle); let i = $index) {
+        <mat-card [style.animation-delay.ms]="i * 100" class="mt-2">
+          <mat-card-header>
+            <div class="flex-center-center">
+              <mat-icon >directions_car</mat-icon>
+              <h3> {{ vehicle.brand }} {{ vehicle.model }}</h3>
+            </div>
+          </mat-card-header>
+          <mat-card-content>
+            <div>
+              <mat-icon class="mr-1">business</mat-icon>
+              <span>Brand:</span>
+              <span>{{ vehicle.brand }}</span>
+            </div>
+            <mat-divider></mat-divider>
+            <div>
+              <mat-icon class="mr-1">model_training</mat-icon>
+              <span>Model:</span>
+              <span>{{ vehicle.model }}</span>
+            </div>
+            <mat-divider></mat-divider>
+            <div>
+              <mat-icon class="mr-1">event</mat-icon>
+              <span>Year:</span>
+              <span>{{ vehicle.year }}</span>
+            </div>
+          </mat-card-content>
+          <mat-card-actions class="flex-center-around">
+            <button mat-stroked-button color="primary" (click)="onEdit(vehicle)">
+              <mat-icon>edit</mat-icon>
+              Edit
+            </button>
+            <button mat-stroked-button color="warn" (click)="onDelete(vehicle)">
+              <mat-icon>delete</mat-icon>
+              Delete
+            </button>
+          </mat-card-actions>
+          @if (vehicle.created_at) {
+            <mat-card-footer>
+              <small class="flex-center-center">
+                <mat-icon>schedule</mat-icon>
+                Created: {{ formatDate(vehicle.created_at) }}
+              </small>
+            </mat-card-footer>
+          }
+        </mat-card>
+      }
+    </div>
+  }
+</div>
